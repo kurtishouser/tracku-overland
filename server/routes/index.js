@@ -1,11 +1,13 @@
 const express = require('express');
 const index = require('../controllers/index');
-const locationsController = require('../controllers/locations');
+const Location = require('../controllers/Location');
 
 const router = express.Router();
 
 router.route('/')
-  .get(index)
-  .post(locationsController);
+  .get(index);
+  
+router.route('/locations')
+  .post(Location.createLocations);
 
 module.exports = router;
