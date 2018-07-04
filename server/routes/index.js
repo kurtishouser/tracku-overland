@@ -1,4 +1,5 @@
 const express = require('express');
+const authenticateDevice = require('../middleware/authenticateDevice');
 const index = require('../controllers/index');
 const Location = require('../controllers/Location');
 
@@ -8,6 +9,6 @@ router.route('/')
   .get(index);
   
 router.route('/locations')
-  .post(Location.createLocations);
+  .post(authenticateDevice, Location.createLocations);
 
 module.exports = router;

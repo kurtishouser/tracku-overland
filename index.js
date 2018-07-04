@@ -16,7 +16,7 @@ mongoose.connection
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '16mb'})); // increased to accommodate 1000 points/batch
 app.use(cors());
 
 app.use('/', routes);
