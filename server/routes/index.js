@@ -9,6 +9,7 @@ router.route('/')
   .get(index);
   
 router.route('/locations')
+  .get(Location.getLocations)
   .post(authenticateDevice, Location.createLocations);
 
 module.exports = router;
