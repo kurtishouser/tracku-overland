@@ -8,8 +8,13 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;
+
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGO_CONNECTION_STRING);
+mongoose.connect(`mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`);
+// use this instead if MongoDB acess control is not enabled  
+// mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`);
+
 mongoose.connection
     .on('error', error => console.log('Error connecting to MongoDB:', error))
     .once('open', () => console.log('Connected to MongoDB.'))
