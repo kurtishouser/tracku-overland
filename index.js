@@ -12,7 +12,7 @@ const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;
 
 mongoose.Promise = global.Promise;
 mongoose.connect(`mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`);
-// use this instead if MongoDB acess control is not enabled  
+// use this instead if MongoDB access control is not enabled
 // mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`);
 
 mongoose.connection

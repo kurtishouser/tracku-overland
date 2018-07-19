@@ -11,7 +11,7 @@ module.exports = {
       : new Date(new Date().setHours(0,0,0));
 
     Location.fetchAll(date)
-      .then((result) => res.json(result))
+      .then((result) => res.json(result));
   },
 
   createLocations: (req, res) => {
