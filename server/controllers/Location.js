@@ -10,14 +10,16 @@ module.exports = {
       ? new Date(moment.tz(req.query.date, timezone).format())
       : new Date(new Date().setHours(0,0,0));
 
-    Location.fetchAll(date)
+    return Location.fetchAll(date)
       .then((result) => res.json(result));
   },
 
   createLocations: (req, res) => {
     if (req.body.locations) {
-      Location.addAll(req.body.locations)
+      return Location.addAll(req.body.locations)
         .then(() => res.json(ok));
     }
+
+    return res.status(400).json({error: 'data is not in the proper format'})
   }
 }
