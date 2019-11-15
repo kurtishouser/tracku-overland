@@ -1,11 +1,14 @@
 // used during development to view data sent by device
 module.exports = (req, res, next) => {
+  console.log('***** headers *****');
+  console.log(req.headers);
+
   console.log('***** body *****');
   console.log(req.body);
 
   console.log('***** locations *****');
   req.body.locations.forEach((location) => {
-    if (location.properties.type) {
+    if (location.properties.type === 'trip') {
       console.log('-- trip stop location --');
       console.log(location);
     } else {
