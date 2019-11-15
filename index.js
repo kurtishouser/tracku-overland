@@ -21,6 +21,7 @@ mongoose.connection
     console.log('Connected to MongoDB.');
 
     const app = express();
+    app.disable('x-powered-by');
 
     app.use(bodyParser.json({limit: '16mb'})); // increased to accommodate 1000 points/batch
     app.use(cors());
@@ -33,8 +34,15 @@ mongoose.connection
 
     const PORT = process.env.PORT || 5000;
 
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       /* eslint-disable no-console */
       console.log(`Express server listening on port ${PORT}`);
     });
+
+    const io = require('./server/config/socket').init(server);
+    io.of('/tracker').on('connection', socket => {
+      console.log('Tracker client connected', socket.id);
+
+      socket.on('disconnect', () => console.log('Tracker client disconnected', socket.id));
+    })
   });

@@ -1,5 +1,6 @@
 const moment = require('moment-timezone');
 const Location = require('../services/Location');
+const { socketIO } = require('../config/socket');
 
 const ok = { result: 'ok' }; // required response for Overland iOS app
 
@@ -16,6 +17,7 @@ module.exports = {
 
   createLocations: (req, res) => {
     if (req.body.locations) {
+      socketIO('/tracker').emit('location-updated', req.body.locations[req.body.locations.length - 1]);
       return Location.addAll(req.body.locations)
         .then(() => res.json(ok));
     }

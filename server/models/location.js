@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const locationSchema = mongoose.Schema({
+const locationSchema = new mongoose.Schema({
   type: {type: String},
   geometry: {
     type: {type: String},
