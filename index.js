@@ -8,7 +8,8 @@ const routes = require('./server/routes');
 
 // use this instead if MongoDB access control is not enabled
 // mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`)
-mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`)
+mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`,
+  {useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
     console.log('Connected to MongoDB');
 
