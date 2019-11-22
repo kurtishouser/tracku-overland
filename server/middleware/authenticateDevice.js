@@ -1,5 +1,7 @@
+const { deviceAuthToken } = require ('../config/env.js');
+
 module.exports = (req, res, next) => {
-  if (!process.env.DEVICE_AUTH_TOKEN) {
+  if (!deviceAuthToken) { // no auth token configured, skip authentication
     return next();
   }
 
@@ -7,7 +9,7 @@ module.exports = (req, res, next) => {
     return res.status(401).json({error: 'no token provided'})
   }
 
-  if (req.query.token === process.env.DEVICE_AUTH_TOKEN) {
+  if (req.query.token === deviceAuthToken) {
     return next();
   }
 
