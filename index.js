@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const { port, dbUser, dbPassword, dbHost, dbPort, dbName } = require ('./server/config/env.js');
+const { port, dbUser, dbPassword, dbHost, dbPort, dbName, ioPath } = require ('./server/config/env.js');
 const routes = require('./server/routes');
 
 // use this instead if MongoDB access control is not enabled
@@ -30,7 +30,7 @@ mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName
       console.log(`Express server listening on port ${port}`);
     });
 
-    const io = require('./server/config/socket').init(server);
+    const io = require('./server/config/socket').init(server, {path: ioPath});
     io.of('/tracker').on('connection', socket => {
       console.log('Tracker client connected', socket.id);
 

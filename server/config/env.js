@@ -7,6 +7,8 @@ const env = {
   dbHost: process.env.TRACKU_DB_HOST,
   dbPort: process.env.TRACKU_DB_PORT,
   dbName: process.env.TRACKU_DB_NAME,
+  // socket.io options
+  ioPath: process.env.TRACKU_IO_PATH || '/',
   // required, change to something else and add to url on iOS app
   deviceAuthToken: process.env.TRACKU_DEVICE_AUTH_TOKEN,
 };
