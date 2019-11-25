@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const { port, dbUser, dbPassword, dbHost, dbPort, dbName, ioPath } = require ('./server/config/env.js');
+const { port, rootRoute, dbUser, dbPassword, dbHost, dbPort, dbName, ioPath } = require ('./server/config/env.js');
 const routes = require('./server/routes');
 
 // use this instead if MongoDB access control is not enabled
@@ -19,18 +19,19 @@ mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName
     app.use(bodyParser.json({limit: '16mb'})); // increased to accommodate 1000 points/batch
     app.use(cors());
 
-    app.use('/', routes);
+    app.use(rootRoute || '/', routes);
 
     app.use((req, res) => {
       res.sendStatus(404);
     });
 
-    const server = app.listen(port, () => {
+    const serverPort = port || 5000;
+    const server = app.listen(serverPort, () => {
       /* eslint-disable no-console */
-      console.log(`Express server listening on port ${port}`);
+      console.log(`Express server listening on port ${serverPort}`);
     });
 
-    const io = require('./server/config/socket').init(server, {path: ioPath});
+    const io = require('./server/config/socket').init(server, {path: ioPath || '/socket.io'});
     io.of('/tracker').on('connection', socket => {
       console.log('Tracker client connected', socket.id);
 
