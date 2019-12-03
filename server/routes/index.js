@@ -1,5 +1,4 @@
 const express = require('express');
-const logIncomingDeviceData = require('../middleware/logIncomingDeviceData');
 const authenticateDevice = require('../middleware/authenticateDevice');
 const broadcastDeviceData = require('../middleware/broadcastDeviceData');
 const index = require('../controllers/index');
@@ -13,7 +12,7 @@ router.route('/')
 
 router.route('/receiver')
   .post(
-    // logIncomingDeviceData, // disable for production
+    require('../middleware/logIncomingDeviceData'), // disable for production
     authenticateDevice,
     broadcastDeviceData,
     Location.createLocations,
