@@ -12,12 +12,12 @@ router.route('/')
 
 router.route('/receiver')
   .post(
-    require('../middleware/logIncomingDeviceData'), // disable for production
+    // require('../middleware/logIncomingDeviceData'), // disable for production
     authenticateDevice,
     broadcastDeviceData,
     Location.createLocations,
   );
-  
+
 router.route('/locations')
   .get(Location.getLocations);
 
