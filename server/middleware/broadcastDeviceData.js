@@ -1,23 +1,47 @@
 const { socketIO } = require('../config/socket');
+const { addLocalTimeProperties } = require('../utils/time');
+
 
 module.exports = (req, res, next) => {
   const { locations, current, trip } = req.body;
+  const currentLocation = current ? current : locations[locations.length - 1];
+  // The start_location checks cover some rare edge cases where the value may be null.
+  // Perhaps this is an issue with the Overland iOS v1.2 app (current_location exists).
+  // Omitting the objects here so client apps won't need to check if it exists.
+  const currentTrip = trip && trip.start_location ? trip : null;
+  const completedTrips = locations.filter(
+    location =>
+      // maybe remove trips w/o start_location to avoid saving them to the db
+      location.properties.start_location && location.properties.type === 'trip'
+  );
 
-  // trip.start_location check below is a rare edge case (Overland 1.2 iOS bug?)
-  // If queued data is sent from the device immediately after a trip is started
-  // the start_location object may be null.
-  // Ignoring it here so client apps won't need to check for it.
+  currentLocation.properties = addLocalTimeProperties(currentLocation);
+
+  if (currentTrip) {
+    currentTrip.start_location.properties = addLocalTimeProperties(
+      currentTrip.start_location
+    );
+    currentTrip.current_location.properties = addLocalTimeProperties(
+      currentTrip.current_location
+    );
+  }
+
+  completedTrips.forEach(trip => {
+    trip.properties.start_location.properties = addLocalTimeProperties(
+      trip.properties.start_location
+    );
+    trip.properties.end_location.properties = addLocalTimeProperties(
+      trip.properties.end_location
+    );
+  });
+
   if (locations) { // probably unnecessary but just in case
     socketIO('/tracker').emit('device-update', {
-      currentLocation: current
-        ? current
-        : locations[req.body.locations.length - 1],
-      currentTrip: trip && trip.start_location ? trip : null,
-      completedTrips: locations.filter(
-        location => location.properties.type === 'trip'
-      ),
+      currentLocation,
+      currentTrip,
+      completedTrips
     });
   }
 
   return next();
-};
+};;
