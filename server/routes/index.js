@@ -2,8 +2,8 @@ const express = require('express');
 const authenticateDevice = require('../middleware/authenticateDevice');
 const broadcastDeviceData = require('../middleware/broadcastDeviceData');
 const index = require('../controllers/index');
-const Location = require('../controllers/Location');
-const Trip = require('../controllers/Trip');
+const { getLocations, createLocations } = require('../controllers/locations');
+const { getTrips } = require('../controllers/trips');
 
 const router = express.Router();
 
@@ -15,13 +15,13 @@ router.route('/receiver')
     // require('../middleware/logIncomingDeviceData'), // disable for production
     authenticateDevice,
     broadcastDeviceData,
-    Location.createLocations,
+    createLocations,
   );
 
 router.route('/locations')
-  .get(Location.getLocations);
+  .get(getLocations);
 
 router.route('/trips')
-  .get(Trip.getTrips);
+  .get(getTrips);
 
 module.exports = router;
