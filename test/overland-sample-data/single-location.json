@@ -1,0 +1,22 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -122.440629,
+      37.766945
+    ]
+  },
+  "properties": {
+    "speed": 1,
+    "battery_state": "unplugged",
+    "timestamp": "2019-01-01T16:00:00Z",
+    "motion": [],
+    "horizontal_accuracy": 65,
+    "vertical_accuracy": 10,
+    "battery_level": 0.89,
+    "wifi": "myNetwork",
+    "altitude": 58,
+    "device_id": "iPhone"
+  }
+}
