@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon -r dotenv/config index.js",
-    "test": "mocha",
+    "test": "mocha --exit",
     "coverage": "nyc npm run test"
   },
   "keywords": [],

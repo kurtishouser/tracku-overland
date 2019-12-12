@@ -3,7 +3,6 @@ const Location = require('../models/Location');
 const fetchAll = async (date) => {
   const nextDay = new Date(date.getTime());
   nextDay.setDate(date.getDate() + 1);
-
   try {
     return await Location
       .find()

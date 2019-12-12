@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const location = require('./overland-sample-data/single-location.json');
+const location = require('./overlandSampleData/singleLocation.json');
 const { addLocalTimeProperties } = require('../server/utils/time');
 
 describe('Time Utility Functions', () => {

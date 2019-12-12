@@ -1,7 +1,5 @@
 const moment = require('moment-timezone');
-const { fetchAll, addAll } = require('../services/locations');
-
-const ok = { result: 'ok' }; // required response for Overland iOS app
+const locations = require('../services/locations');
 
 const getLocations = async (req, res) => {
   const timezone = req.query.tz || 'UTC';
@@ -9,14 +7,18 @@ const getLocations = async (req, res) => {
     ? new Date(moment.tz(req.query.date, timezone).format())
     : new Date(new Date().setHours(0,0,0));
 
-  const result = await fetchAll(date);
-  return res.json(result);
+  try {
+    const result = await locations.fetchAll(date);
+    return res.json(result);
+  } catch (err) {
+    return err;
+  }
 };
 
 const createLocations = async (req, res) => {
   if (req.body.locations) {
-    await addAll(req.body.locations);
-    return res.json(ok);
+    await locations.addAll(req.body.locations);
+    return res.status(200).json({ result: 'ok' });
   }
 
   return res.status(400).json({error: 'data is not in the proper format'});
