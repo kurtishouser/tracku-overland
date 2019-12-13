@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon -r dotenv/config index.js",
-    "test": "mocha --exit",
-    "coverage": "nyc npm run test"
+    "test": "nyc --reporter=text mocha --exit",
+    "coverage": "nyc --reporter=html --reporter=text mocha --exit"
   },
   "keywords": [],
   "author": "",
