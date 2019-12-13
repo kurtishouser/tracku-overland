@@ -7,7 +7,7 @@ const { port, rootRoute, dbUser, dbPassword, dbHost, dbPort, dbName, ioPath } = 
 const routes = require('./server/routes');
 
 // use this instead if MongoDB access control is not enabled
-// mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`)
+// mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`,
 mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`,
   {useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
@@ -23,6 +23,14 @@ mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName
 
     app.use((req, res) => {
       res.sendStatus(404);
+    });
+
+    app.use((error, req, res, next) => {
+      console.log(error);
+      const status = error.statusCode || 500;
+      const message = error.message;
+      const data = error.data;
+      res.status(status).json({message, data});
     });
 
     const serverPort = port || 5000;

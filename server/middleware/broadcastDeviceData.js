@@ -3,6 +3,10 @@ const { addLocalTimeProperties } = require('../utils/time');
 
 
 module.exports = (req, res, next) => {
+  if (!req.body.locations) {
+    return res.status(400).json({error: 'data is not in the proper format'});
+  }
+
   const { locations, current, trip } = req.body;
 
   // don't mutate the locations object since it will be saved to the db

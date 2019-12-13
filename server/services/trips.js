@@ -13,7 +13,9 @@ const fetchAll = async (date) => {
     .sort({'properties.start': 'asc'})
     .lean().exec();
   } catch (error) {
-    throw new Error(error);
+    const error = new Error('Error retrieving from database.');
+    error.statusCode = 500;
+    throw error;
   }
 };
 

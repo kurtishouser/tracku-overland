@@ -84,6 +84,6 @@ const locationSchema = new mongoose.Schema({
     activity: String,
     desired_accuracy: Number,
   },
-}, {timestamps: true});
+}, {timestamps: true, bufferCommands: false});
 
 module.exports = mongoose.model('Location', locationSchema);

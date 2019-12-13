@@ -3,6 +3,7 @@ const Location = require('../models/Location');
 const fetchAll = async (date) => {
   const nextDay = new Date(date.getTime());
   nextDay.setDate(date.getDate() + 1);
+
   try {
     return await Location
       .find()
@@ -11,16 +12,20 @@ const fetchAll = async (date) => {
       .where('properties.type').ne('trip')
       .sort({'properties.timestamp': 'asc'})
       .lean().exec();
-  } catch (error) {
-    throw new Error(error);
+  } catch (err) {
+    const error = new Error('Error retrieving from database.');
+    error.statusCode = 500;
+    throw error;
   }
 };
 
 const addAll = async (locations) => {
   try {
     return await Location.insertMany(locations);
-  } catch (error) {
-    throw new Error(error);
+  } catch (err) {
+    const error = new Error('Error saving to database.');
+    error.statusCode = 500;
+    throw error;
   }
 };
 

@@ -1,7 +1,7 @@
 const moment = require('moment-timezone');
 const locations = require('../services/locations');
 
-const getLocations = async (req, res) => {
+const getLocations = async (req, res, next) => {
   const timezone = req.query.tz || 'UTC';
   const date = req.query.date
     ? new Date(moment.tz(req.query.date, timezone).format())
@@ -9,19 +9,25 @@ const getLocations = async (req, res) => {
 
   try {
     const result = await locations.fetchAll(date);
-    return res.json(result);
-  } catch (err) {
-    return err;
+    return res.status(200).json(result);
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    return next(error);
   }
 };
 
-const createLocations = async (req, res) => {
-  if (req.body.locations) {
+const createLocations = async (req, res, next) => {
+  try {
     await locations.addAll(req.body.locations);
     return res.status(200).json({ result: 'ok' });
+  } catch(error) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    return next(error);
   }
-
-  return res.status(400).json({error: 'data is not in the proper format'});
 };
 
 module.exports = {
