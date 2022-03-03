@@ -12,7 +12,7 @@ const fetchAll = async (date) => {
     .where('properties.type').eq('trip')
     .sort({'properties.start': 'asc'})
     .lean().exec();
-  } catch (error) {
+  } catch (err) {
     const error = new Error('Error retrieving from database.');
     error.statusCode = 500;
     throw error;
