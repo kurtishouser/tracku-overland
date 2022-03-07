@@ -39,7 +39,12 @@ mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName
       console.log(`Express server listening on port ${serverPort}`);
     });
 
-    const io = require('./server/config/socket').init(server, {path: ioPath || '/socket.io'});
+    const io = require('./server/config/socket').init(server, {
+      cors: {
+        origin: '*',
+      },
+      path: ioPath || '/socket.io'
+    });
     io.of('/tracker').on('connection', socket => {
       console.log('Tracker client connected', socket.id);
 
