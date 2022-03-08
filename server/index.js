@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const { port, rootRoute, dbUser, dbPassword, dbHost, dbPort, dbName, ioPath } = require ('./server/config/env.js');
-const routes = require('./server/routes');
+const { port, rootRoute, dbUser, dbPassword, dbHost, dbPort, dbName, ioPath } = require ('./config/env.js');
+const routes = require('./routes');
 
 // use this instead if MongoDB access control is not enabled
 // mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`,
@@ -39,7 +39,7 @@ mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName
       console.log(`Express server listening on port ${serverPort}`);
     });
 
-    const io = require('./server/config/socket').init(server, {
+    const io = require('./config/socket').init(server, {
       cors: {
         origin: '*',
       },
