@@ -6,8 +6,7 @@ const cors = require('cors');
 const { port, rootRoute, dbUser, dbPassword, dbHost, dbPort, dbName, ioPath } = require ('./config/env.js');
 const routes = require('./routes');
 
-// use this instead if MongoDB access control is not enabled
-// mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`,
+// MongoDB access control must be enabled (mongod --auth)
 mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`,
   {useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
