@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const { port, rootRoute, dbUser, dbPassword, dbHost, dbPort, dbName, ioPath } = require ('./config/env.js');
+const { initIO } = require('./config/socket');
 const routes = require('./routes');
 
 // MongoDB access control must be enabled (mongod --auth)
@@ -38,7 +39,7 @@ mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName
       console.log(`Express server listening on port ${serverPort}`);
     });
 
-    const io = require('./config/socket').init(server, {
+    const io = initIO(server, {
       cors: {
         origin: '*',
       },

@@ -1,7 +1,7 @@
 let io;
 
 module.exports = {
-  init: (server, options) => {
+  initIO: (server, options) => {
     io = require('socket.io')(server, options);
     return io; 
   },
