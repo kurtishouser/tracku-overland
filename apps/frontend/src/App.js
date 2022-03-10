@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Map, TileLayer, ScaleControl, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, ScaleControl, Marker, Popup, useMap } from 'react-leaflet';
 import io from 'socket.io-client';
 
 import { mpsToMph, metersToFeet, metersToMiles } from './utils/unitConversion';
@@ -26,6 +26,29 @@ const initialLocation = {
   },
   properties: {}
 };
+
+const DeviceMarker = ({currentLocation}) => {
+  const map = useMap();
+  const position = {
+    lat: currentLocation.geometry.coordinates[1],
+    lng: currentLocation.geometry.coordinates[0]
+  };
+  map.panTo(position);
+
+  return (
+    <Marker position={position}>
+      <Popup>
+        <div>
+          <strong>Device:</strong>{' '}
+          {currentLocation.properties.device_id}
+        </div>
+        <div>
+          <strong>Time:</strong> {currentLocation.properties.local_time}
+        </div>
+      </Popup>
+    </Marker>
+  )
+}
 
 function App() {
   const [socketId, setSocketId] = useState(null);
@@ -75,26 +98,16 @@ function App() {
       </header>
 
       <div className='content'>
-        <Map className='map content-section' center={center} zoom={zoom}>
+        <MapContainer className='map content-section' center={center} zoom={zoom}>
           <TileLayer
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             attribution='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
           />
           {currentLocation.properties.timestamp && (
-            <Marker position={center}>
-              <Popup>
-                <div>
-                  <strong>Device:</strong>{' '}
-                  {currentLocation.properties.device_id}
-                </div>
-                <div>
-                  <strong>Time:</strong> {currentLocation.properties.local_time}
-                </div>
-              </Popup>
-            </Marker>
+            <DeviceMarker currentLocation={currentLocation}/>
           )}
           <ScaleControl position='bottomleft' />
-        </Map>
+        </MapContainer>
 
         <div className='content-section'>
           <h2>Current Location</h2>
