@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo:5.0.6
+    # container_name: tracku_overland
+    volumes:
+      - db_data:/data/db
+      - ./home:/home
+      - ./_init:/docker-entrypoint-initdb.d
+    # restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      # for initialization script in /_init
+      MONGO_INITDB_DATABASE_USER: ${MONGO_INITDB_DATABASE_USER}
+      MONGO_INITDB_DATABASE_PWD: ${MONGO_INITDB_DATABASE_PWD}
+    ports:
+      - ${MONGO_HOST_PORT}:27017
+
+volumes:
+  db_data:
