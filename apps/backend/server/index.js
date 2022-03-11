@@ -3,13 +3,12 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const { port, rootRoute, dbUser, dbPassword, dbHost, dbPort, dbName, ioPath } = require ('./config/env.js');
+const { port, rootRoute, dbUri, ioPath } = require ('./config/env.js');
 const { initIO } = require('./config/socket');
 const routes = require('./routes');
 
 // MongoDB access control must be enabled (mongod --auth)
-mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`,
-  {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(dbUri, {useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
     console.log('Connected to MongoDB');
 
@@ -19,7 +18,7 @@ mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName
     app.use(bodyParser.json({limit: '16mb'})); // increased to accommodate 1000 points/batch
     app.use(cors());
 
-    app.use(rootRoute || '/', routes);
+    app.use(rootRoute, routes);
 
     app.use((req, res) => {
       res.sendStatus(404);
@@ -33,17 +32,16 @@ mongoose.connect(`mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName
       res.status(status).json({message, data});
     });
 
-    const serverPort = port || 5000;
-    const server = app.listen(serverPort, () => {
+    const server = app.listen(port, () => {
       /* eslint-disable no-console */
-      console.log(`Express server listening on port ${serverPort}`);
+      console.log(`Express server listening on port ${port}`);
     });
 
     const io = initIO(server, {
       cors: {
         origin: '*',
       },
-      path: ioPath || '/socket.io'
+      path: ioPath,
     });
     io.of('/tracker').on('connection', socket => {
       console.log('Tracker client connected', socket.id);

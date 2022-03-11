@@ -5,11 +5,11 @@ module.exports = (req, res, next) => {
     return next();
   }
 
-  if (!req.query.token) {
+  if (!req.query.authToken) {
     return res.status(401).json({error: 'no token provided'})
   }
 
-  if (req.query.token === deviceAuthToken) {
+  if (req.query.authToken === deviceAuthToken) {
     return next();
   }
 
