@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server/index.js",
-    "dev": "nodemon -r dotenv/config ./server/index.js",
+    "start": "node ./src/index.js",
+    "dev": "nodemon -r dotenv/config ./src/index.js",
     "build": "",
     "test": "nyc --reporter=text mocha --exit",
     "coverage": "nyc --reporter=html --reporter=text mocha --exit"

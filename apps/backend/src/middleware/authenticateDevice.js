@@ -1,4 +1,4 @@
-const { deviceAuthToken } = require ('../config/env.js');
+const { deviceAuthToken } = require ('../config');
 
 module.exports = (req, res, next) => {
   if (!deviceAuthToken) { // no auth token configured, skip authentication

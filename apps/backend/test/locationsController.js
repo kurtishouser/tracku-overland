@@ -1,8 +1,8 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 
-const locationsController = require('../server/controllers/locations');
-const locations = require('../server/services/locations');
+const locationsController = require('../src/controllers/locations');
+const locations = require('../src/services/locations');
 
 describe('Locations Controller', () => {
   const mockResponse = () => {
