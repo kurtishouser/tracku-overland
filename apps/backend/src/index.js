@@ -1,41 +1,17 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const cors = require('cors');
 
-const { port, rootRoute, dbUri, ioPath } = require ('./config');
+const { port, ioPath } = require ('./config');
+const loaders = require('./loaders');
 const { initIO } = require('./config/socket');
-const routes = require('./routes');
 
-// MongoDB access control must be enabled (mongod --auth)
-mongoose.connect(dbUri, {useNewUrlParser: true, useUnifiedTopology: true})
-  .then(() => {
-    console.log('Connected to MongoDB');
-
+(async () => {
     const app = express();
-    app.disable('x-powered-by');
-
-    app.use(bodyParser.json({limit: '16mb'})); // increased to accommodate 1000 points/batch
-    app.use(cors());
-
-    app.use(rootRoute, routes);
-
-    app.use((req, res) => {
-      res.sendStatus(404);
-    });
-
-    app.use((error, req, res, next) => {
-      console.log(error);
-      const status = error.statusCode || 500;
-      const message = error.message;
-      const data = error.data;
-      res.status(status).json({message, data});
-    });
+    await loaders(app);
 
     const server = app.listen(port, () => {
       /* eslint-disable no-console */
-      console.log(`Express server listening on port ${port}`);
-    });
+      console.log(`Server listening on port ${port}`);
+    }); 
 
     const io = initIO(server, {
       cors: {
@@ -60,10 +36,4 @@ mongoose.connect(dbUri, {useNewUrlParser: true, useUnifiedTopology: true})
         });
       });
     });
-  })
-  .catch((error) => {
-    console.log('Error connecting to MongoDB');
-    console.log(error.message);
-    console.log('Exiting...');
-    process.exit();
-  });
+})();
