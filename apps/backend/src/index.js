@@ -29,7 +29,7 @@ const { initIO } = require('./config/socket');
       console.log('Shutting down...');
       io.close();
       server.close(() => {
-        mongoose.connection.close()
+        app.get('mongoose').connection.close()
           .then(() => {
             console.log('Shutdown complete. Goodbye.');
             process.exit();
