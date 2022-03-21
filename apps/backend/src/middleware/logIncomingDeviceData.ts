@@ -1,8 +1,20 @@
-// used during development to view data sent by device
-module.exports = (req, res, next) => {
-  console.log('---------- BATCH START----------');
-  const { locations, current, trip } = req.body;
+import { RequestHandler } from 'express';
 
+import { ILocation, ITrip } from '../interfaces/Location';
+
+// used during development to view data sent by device
+export default ((req, res, next) => {
+  const {
+    locations,
+    current,
+    trip,
+  }: {
+    locations: ILocation[];
+    current: ILocation;
+    trip: ITrip;
+  } = req.body;
+  
+  console.log('---------- BATCH START----------');
   console.log('***** headers *****');
   console.log(req.headers);
 
@@ -10,7 +22,7 @@ module.exports = (req, res, next) => {
   console.log(req.body);
 
   console.log('***** locations *****');
-  locations.forEach((location) => {
+  locations.forEach(location => {
     if (location.properties.type === 'trip') {
       console.log('-- trip stop location --');
       console.log(location);
@@ -44,4 +56,4 @@ module.exports = (req, res, next) => {
   console.log('---------- BATCH END----------');
 
   next();
-}
+}) as RequestHandler;

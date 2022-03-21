@@ -9,3 +9,6 @@
 # testing
 .nyc_output
 coverage
+
+# build_config
+/dist
