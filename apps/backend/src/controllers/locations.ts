@@ -1,20 +1,14 @@
 import { RequestHandler } from 'express';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
 
+import { startDate } from '../utils/time';
 import * as locations from '../services/locations';
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
 const getLocations: RequestHandler = async (req, res, next) => {
-  // disable for now
-  // const timezone = req.query.tz || 'UTC';
-  // const date = req.query.date
-  //   ? new Date(dayjs.tz(req.query.date, timezone).format())
-  //   : new Date(new Date().setHours(0, 0, 0, 0));
-  const date = new Date(new Date().setHours(0, 0, 0, 0));
+  const date = startDate(req);
+
+  if (date.toString() === 'Invalid Date') {
+    return res.status(400).send('Invalid Date');
+  }
 
   try {
     const result = await locations.fetchAll(date);

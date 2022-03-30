@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { find } from 'geo-tz';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -7,6 +8,19 @@ import { ILocation } from '../interfaces/Location';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+
+const startDate = (req: Request) => {
+  let date: Date;
+  if (req.query.date) {
+    date = new Date(req.query.date as string);
+  } else {
+    date = new Date(
+      new Date().setHours(0, 0, 0, 0) - new Date().getTimezoneOffset() * 60 * 1000
+    );
+  }
+
+  return date;
+};
 
 const addLocalTimeProperties = (location: ILocation) => {
   const { geometry, properties } = location;
@@ -26,4 +40,4 @@ const addLocalTimeProperties = (location: ILocation) => {
   };
 };
 
-export { addLocalTimeProperties };
+export { startDate, addLocalTimeProperties };
