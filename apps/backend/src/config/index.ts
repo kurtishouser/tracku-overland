@@ -1,5 +1,6 @@
 // server port
-const port = process.env.TRACKU_API_PORT || 5000;
+const envPort = parseInt(process.env.TRACKU_API_PORT || '');
+const port = Number.isInteger(envPort) ? envPort : 5000;
 // server subdirectory
 const rootRoute = process.env.TRACKU_ROOT_ROUTE || '/';
 // MongoDB Credentials
@@ -10,6 +11,6 @@ const dbUri =
 // Socket.IO options
 const ioPath = process.env.TRACKU_IO_PATH || '/socket.io';
 // required
-const deviceAuthToken = process.env.TRACKU_DEVICE_AUTH_TOKEN || '1234';
+const deviceAuthToken = process.env.TRACKU_DEVICE_AUTH_TOKEN || 'secret';
 
 export { port, rootRoute, dbUri, ioPath, deviceAuthToken };
