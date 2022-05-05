@@ -7,9 +7,10 @@ import routes from '../routes';
 
 export default async (app: Express) => {
   app.disable('x-powered-by');
-  // limit increased to accommodate 1000 points/batch
-  // it was just a guess and can probably be lower
-  app.use(json({ limit: '16mb' }));
+  // increase limit to accommodate 1000 locations/batch
+  // ~600 bytes/location per Overland documentation
+  // so make it 1000kb to be safe
+  app.use(json({ limit: '1000kb' }));
   app.use(cors());
 
   app.use(rootRoute, routes);
