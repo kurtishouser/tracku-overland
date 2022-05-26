@@ -10,16 +10,12 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const startDate = (req: Request) => {
-  let date: Date;
-  if (req.query.date) {
-    date = new Date(req.query.date as string);
-  } else {
-    date = new Date(
-      new Date().setHours(0, 0, 0, 0) - new Date().getTimezoneOffset() * 60 * 1000
-    );
-  }
-
-  return date;
+  return req.query.date
+    ? new Date(req.query.date as string)
+    : new Date(
+        new Date().setHours(0, 0, 0, 0) -
+          new Date().getTimezoneOffset() * 60 * 1000
+      );
 };
 
 const addLocalTimeProperties = (location: ILocation) => {
