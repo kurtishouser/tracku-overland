@@ -54,7 +54,7 @@ describe('Time Utility Functions', () => {
 
     it('should add local time properties with the correct values', () => {
       expect(mutatedLocationProperties).toMatchObject({
-        local_date: 'Tuesday January 1, 2019',
+        local_date: 'Tuesday January 1st, 2019',
         local_time: '8:00:00 am',
         local_time_zone: 'America/Los_Angeles',
         local_timestamp: '2019-01-01T08:00:00-08:00',

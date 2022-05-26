@@ -3,11 +3,13 @@ import { find } from 'geo-tz';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
+import AdvancedFormat from 'dayjs/plugin/advancedFormat';
 
 import { ILocation } from '../interfaces/Location';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(AdvancedFormat);
 
 const startDate = (req: Request) => {
   return req.query.date
@@ -29,7 +31,7 @@ const addLocalTimeProperties = (location: ILocation) => {
 
   return {
     ...properties,
-    local_date: dayjs(localTime).format('dddd MMMM D, YYYY'),
+    local_date: dayjs(localTime).format('dddd MMMM Do, YYYY'),
     local_time: dayjs(localTime).format('h:mm:ss a'),
     local_time_zone: locationTimeZone,
     local_timestamp: dayjs(localTime).format(),
