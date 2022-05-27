@@ -27,6 +27,13 @@ describe('Time Utility Functions', () => {
       expect(date).toBeInstanceOf(Date);
       expect(date).toEqual(new Date('2022-01-01'));
     });
+
+    it('should return invalid Date object if invalid date provided', () => {
+      const date = startDate({ query: { date: 'Invalid Date' } } as any);
+
+      expect(date).toBeInstanceOf(Date);
+      expect(date.toString()).toEqual('Invalid Date');
+    });
   });
 
   describe('addLocalTimeProperties()', () => {
