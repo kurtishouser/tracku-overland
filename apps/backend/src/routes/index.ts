@@ -5,6 +5,7 @@ import { getTrips } from '../controllers/trips';
 import * as locations from '../services/locations';
 import * as trips from '../services/trips';
 import authenticateDevice from '../middleware/authenticateDevice';
+import validateDeviceData from '../middleware/validateDeviceData';
 import broadcastDeviceData from '../middleware/broadcastDeviceData';
 
 
@@ -15,6 +16,7 @@ router.route('/').get(index);
 router.route('/receiver').post(
   // require('../middleware/logIncomingDeviceData'), // disable for production
   authenticateDevice,
+  validateDeviceData,
   broadcastDeviceData,
   createLocations(locations.addAll)
 );
