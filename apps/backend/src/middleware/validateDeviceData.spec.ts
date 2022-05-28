@@ -33,4 +33,16 @@ describe('validateDeviceData() middleware', () => {
       error: 'data is not in the proper format',
     });
   });
+
+  it('should call next() if the provided data is valid', () => {
+    const mockRequest: Partial<Request> = { body: { locations: [] } };
+
+    validateDeviceData(
+      mockRequest as Request,
+      mockResponse as Response,
+      mockNext as NextFunction
+    );
+
+    expect(mockNext).toBeCalledTimes(1);
+  })
 });
