@@ -12,7 +12,7 @@ const getTrips = (fetchTrips: Function) =>
 
     try {
       const result = await fetchTrips(date);
-      return res.json(result);
+      return res.status(200).json(result);
     } catch (error: any) {
       if (!error.statusCode) {
         error.statusCode = 500;
