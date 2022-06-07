@@ -4,7 +4,9 @@ import { startDate } from '../utils/time';
 
 const getLocations = (fetchLocations: Function) =>
   (async (req, res, next) => {
-    const date = startDate(req);
+    const date = req.query.date
+      ? startDate(req.query.date as string)
+      : startDate();
 
     if (date.toString() === 'Invalid Date') {
       return res.status(400).send('Invalid Date');

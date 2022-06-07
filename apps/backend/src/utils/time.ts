@@ -1,4 +1,3 @@
-import { Request } from 'express';
 import { find } from 'geo-tz';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -11,9 +10,9 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(AdvancedFormat);
 
-const startDate = (req: Request) => {
-  return req.query.date
-    ? new Date(req.query.date as string)
+const startDate = (date?: string) => {
+  return date
+    ? new Date(date as string)
     : new Date(
         new Date().setHours(0, 0, 0, 0) -
           new Date().getTimezoneOffset() * 60 * 1000

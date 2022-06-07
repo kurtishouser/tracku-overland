@@ -10,7 +10,7 @@ dayjs.extend(timezone);
 describe('Time Utility Functions', () => {
   describe('startDate()', () => {
     it("should return Date object with today's date/time (UTC) if no date provided", () => {
-      const date = startDate({ query: {} } as any);
+      const date = startDate();
 
       expect(date).toBeInstanceOf(Date);
       expect(date).toEqual(
@@ -22,14 +22,15 @@ describe('Time Utility Functions', () => {
     });
 
     it('should return Date object with the date/time (UTC) provided', () => {
-      const date = startDate({ query: { date: '2022-01-01' } } as any);
+      const date = startDate('2022-01-01');
 
       expect(date).toBeInstanceOf(Date);
       expect(date).toEqual(new Date('2022-01-01'));
     });
 
     it('should return invalid Date object if invalid date provided', () => {
-      const date = startDate({ query: { date: 'Invalid Date' } } as any);
+      const date = startDate('Bad Date');
+      // const date = startDate(1234567890);
 
       expect(date).toBeInstanceOf(Date);
       expect(date.toString()).toEqual('Invalid Date');
