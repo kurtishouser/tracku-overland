@@ -1,7 +1,6 @@
 // server port
-const envPort = parseInt(process.env.TRACKU_API_PORT || '');
-const port = Number.isInteger(envPort) ? envPort : 5000;
-// server subdirectory
+const port = parseInt(process.env.TRACKU_API_PORT || '5000');
+// server root directory
 const rootRoute = process.env.TRACKU_ROOT_ROUTE || '/';
 // MongoDB Credentials
 // mongodb://dbuser:dbpassword@]host:port/dbname
