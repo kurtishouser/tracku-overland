@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   mongo:
-    image: mongo:5.0.6
+    image: mongo:5.0
     # container_name: tracku_overland
     volumes:
       - db_data:/data/db
