@@ -7,14 +7,14 @@ import * as trips from '../services/trips';
 import authenticateDevice from '../middleware/authenticateDevice';
 import validateDeviceData from '../middleware/validateDeviceData';
 import broadcastDeviceData from '../middleware/broadcastDeviceData';
-
+// import logIncomingDeviceData from '../middleware/logIncomingDeviceData'; // disable for production
 
 const router = express.Router();
 
 router.route('/').get(index);
 
 router.route('/receiver').post(
-  // require('../middleware/logIncomingDeviceData'), // disable for production
+  // logIncomingDeviceData, // disable for production
   authenticateDevice,
   validateDeviceData,
   broadcastDeviceData,

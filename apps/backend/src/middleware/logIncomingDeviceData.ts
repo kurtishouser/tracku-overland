@@ -13,7 +13,7 @@ export default ((req, res, next) => {
     current: ILocation;
     trip: ITrip;
   } = req.body;
-  
+
   console.log('---------- BATCH START----------');
   console.log('***** headers *****');
   console.log(req.headers);
