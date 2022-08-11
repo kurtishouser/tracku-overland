@@ -28,9 +28,9 @@ services:
       context: ./apps/backend
     container_name: tracku_api
     restart: on-failure:5
-    environment: 
-      TRACKU_API_PORT: ${TRACKU_API_PORT}
-      TRACKU_ROOT_ROUTE: ${TRACKU_ROOT_ROUTE}
+    env_file:
+      - ./apps/backend/.env
+    environment:
       TRACKU_DB_URI: ${TRACKU_DB_URI}
       TRACKU_IO_PATH: ${TRACKU_IO_PATH}
       VIRTUAL_HOST: ${VIRTUAL_HOST}
@@ -51,13 +51,8 @@ services:
       - ./home:/home
       - ./docker/mongodb_overland/_init:/docker-entrypoint-initdb.d
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
-      # for initialization script in /_init
-      MONGO_INITDB_DATABASE_USER: ${MONGO_INITDB_DATABASE_USER}
-      MONGO_INITDB_DATABASE_PWD: ${MONGO_INITDB_DATABASE_PWD}
+    env_file:
+      - ./docker/mongodb_overland/.env
 
 volumes:
   db_data:
