@@ -1,0 +1,68 @@
+version: '3.1'
+
+services:
+  www:
+    build:
+      dockerfile: Dockerfile
+      context: ./apps/frontend
+    container_name: tracku_www
+    restart: always
+    environment:
+      # no effect since Dockerfile is currently from the prebuilt app
+      # REACT_APP_IO_SOCKET: ${REACT_APP_IO_SOCKET}
+      # REACT_APP_IO_PATH: ${REACT_APP_IO_PATH}
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      VIRTUAL_PATH: ${VIRTUAL_PATH_WWW}
+    expose:
+      - 80
+      - 443
+    networks:
+     - default
+     - nginx-proxy
+    depends_on:
+      - api
+
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: ./apps/backend
+    container_name: tracku_api
+    restart: on-failure:5
+    environment: 
+      TRACKU_API_PORT: ${TRACKU_API_PORT}
+      TRACKU_ROOT_ROUTE: ${TRACKU_ROOT_ROUTE}
+      TRACKU_DB_URI: ${TRACKU_DB_URI}
+      TRACKU_IO_PATH: ${TRACKU_IO_PATH}
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      VIRTUAL_PATH: ${VIRTUAL_PATH_API}
+    expose:
+      - 5000
+    networks:
+     - default
+     - nginx-proxy
+    depends_on:
+      - db
+
+  db:
+    image: mongo:5.0
+    container_name: tracku_db
+    volumes:
+      - db_data:/data/db
+      - ./home:/home
+      - ./docker/mongodb_overland/_init:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      # for initialization script in /_init
+      MONGO_INITDB_DATABASE_USER: ${MONGO_INITDB_DATABASE_USER}
+      MONGO_INITDB_DATABASE_PWD: ${MONGO_INITDB_DATABASE_PWD}
+
+volumes:
+  db_data:
+
+networks:
+  default:
+  nginx-proxy:
+    external: true
