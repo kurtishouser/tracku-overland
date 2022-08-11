@@ -8,7 +8,7 @@ services:
       context: ./apps/frontend
     container_name: tracku_www
     restart: always
-    environment:
+    # environment:
       # no effect since Dockerfile is from the prebuilt app
       # REACT_APP_IO_SOCKET: ${REACT_APP_IO_SOCKET}
       # REACT_APP_IO_PATH: ${REACT_APP_IO_PATH}
@@ -29,11 +29,12 @@ services:
       context: ./apps/backend
     container_name: tracku_api
     restart: on-failure:5
-    environment: 
+    environment:
       TRACKU_API_PORT: ${TRACKU_API_PORT}
       TRACKU_ROOT_ROUTE: ${TRACKU_ROOT_ROUTE}
       TRACKU_DB_URI: ${TRACKU_DB_URI}
       TRACKU_IO_PATH: ${TRACKU_IO_PATH}
+      TRACKU_DEVICE_AUTH_TOKEN: ${TRACKU_DEVICE_AUTH_TOKEN}
     expose:
       - 5000
     ports:
