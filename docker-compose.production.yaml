@@ -13,6 +13,7 @@ services:
       # REACT_APP_IO_PATH: ${REACT_APP_IO_PATH}
       VIRTUAL_HOST: ${VIRTUAL_HOST}
       VIRTUAL_PATH: ${VIRTUAL_PATH_WWW}
+      VIRTUAL_DEST: /
     expose:
       - 80
       - 443
@@ -32,9 +33,9 @@ services:
       - ./apps/backend/.env
     environment:
       TRACKU_DB_URI: ${TRACKU_DB_URI}
-      TRACKU_IO_PATH: ${TRACKU_IO_PATH}
       VIRTUAL_HOST: ${VIRTUAL_HOST}
       VIRTUAL_PATH: ${VIRTUAL_PATH_API}
+      #VIRTUAL_DEST: /
     expose:
       - 5000
     networks:
@@ -61,3 +62,4 @@ networks:
   default:
   nginx-proxy:
     external: true
+

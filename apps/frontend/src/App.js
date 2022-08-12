@@ -59,15 +59,22 @@ function App() {
   });
 
   useEffect(() => {
-    socket.once('connect', () => setSocketId(socket.id));
+    socket.once('connect', () => {
+      console.log('socket connected');
+      return setSocketId(socket.id);
+   });
   }, [socketId]);
 
   useEffect(() => {
-    socket.once('disconnect', () => setSocketId(null));
+    socket.once('disconnect', () => {
+      console.log('socket disconnected');
+      return setSocketId(null);
+    });
   }, [socketId]);
 
   useEffect(() => {
     socket.once('device-update', payload => {
+      console.log('device updated');
       setDeviceDetails({
         currentLocation: payload.currentLocation,
         currentTrip: payload.currentTrip,
