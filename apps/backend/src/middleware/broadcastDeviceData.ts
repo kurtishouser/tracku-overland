@@ -5,6 +5,8 @@ import { socketIO } from '../config/socket';
 import { addLocalTimeProperties } from '../utils/time';
 
 export default ((req, res, next) => {
+  console.log('brouadcastDeviceData()');
+
   const {
     locations,
     current,
@@ -14,7 +16,7 @@ export default ((req, res, next) => {
     current: ILocation;
     trip: ITrip;
   } = req.body;
-  
+
   // don't mutate the locations object since it will be saved to the db
   // is this necessary? -> { ...locations[locations.length - 1] }
   const currentLocation = current

@@ -33,7 +33,16 @@ import loaders from './loaders';
   });
 
   process.on('SIGINT', async () => {
-    console.log('Shutting down...');
+    console.log('SIGINT: Shutting down...');
+    io.close();
+    httpServer.close;
+    await app.get('mongoose').connection.close();
+    console.log('Shutdown complete. Goodbye.');
+    process.exit();
+  });
+
+  process.on('SIGTERM', async () => {
+    console.log('SIGTERM: Shutting down...');
     io.close();
     httpServer.close;
     await app.get('mongoose').connection.close();
