@@ -13,7 +13,7 @@ services:
       # REACT_APP_IO_PATH: ${REACT_APP_IO_PATH}
       VIRTUAL_HOST: ${VIRTUAL_HOST}
       VIRTUAL_PATH: ${VIRTUAL_PATH_WWW}
-      VIRTUAL_DEST: /
+      VIRTUAL_DEST: ${VIRTUAL_DEST_WWW}
     expose:
       - 80
       - 443
@@ -36,6 +36,8 @@ services:
       VIRTUAL_HOST: ${VIRTUAL_HOST}
       VIRTUAL_PATH: ${VIRTUAL_PATH_API}
       #VIRTUAL_DEST: /
+      #VIRTUAL_PROTO: https
+      #VIRTUAL_PORT: 5000
     expose:
       - 5000
     networks:

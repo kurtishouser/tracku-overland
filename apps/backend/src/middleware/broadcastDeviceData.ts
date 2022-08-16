@@ -5,7 +5,7 @@ import { socketIO } from '../config/socket';
 import { addLocalTimeProperties } from '../utils/time';
 
 export default ((req, res, next) => {
-  console.log('brouadcastDeviceData()');
+  console.log('broadcastDeviceData()');
 
   const {
     locations,
