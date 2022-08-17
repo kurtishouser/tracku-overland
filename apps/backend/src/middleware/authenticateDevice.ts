@@ -3,10 +3,7 @@ import { RequestHandler } from 'express';
 import { deviceAuthToken } from '../config';
 
 export default ((req, res, next) => {
-  console.log('authenticateDevice()');
-
   if (!req.query.authToken) {
-    console.log('no token provided')
     return res.status(401).json({ error: 'no token provided' });
   }
 
@@ -14,6 +11,5 @@ export default ((req, res, next) => {
     return next();
   }
 
-  console.log('invalid token')
   res.status(401).json({ error: 'invalid token' });
 }) as RequestHandler;

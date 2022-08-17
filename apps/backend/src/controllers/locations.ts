@@ -4,7 +4,6 @@ import { startDate } from '../utils/time';
 
 const getLocations = (fetchLocations: Function) =>
   (async (req, res, next) => {
-    console.log('getLocations()');
     const date = req.query.date
       ? startDate(req.query.date as string)
       : startDate();
@@ -26,7 +25,6 @@ const getLocations = (fetchLocations: Function) =>
 
 const createLocations = (addLocations: Function) =>
   (async (req, res, next) => {
-    console.log('createLocations()');
     try {
       await addLocations(req.body.locations);
       return res.status(200).json({ result: 'ok' });

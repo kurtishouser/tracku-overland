@@ -13,12 +13,6 @@ export default async (app: Express) => {
   app.use(json({ limit: '1000kb' }));
   app.use(cors());
 
-  app.use((req, res, next) => {
-    console.log(req.method, req.url);
-    console.log(JSON.stringify(req.headers, null, 2));
-    next();
-  });
-
   app.use(rootRoute, routes);
 
   app.use(((req, res) => {
