@@ -20,6 +20,10 @@ import loaders from './loaders';
   } as ServerOptions);
 
   io.of('/tracker').on('connection', socket => {
+    socket.on('connect_error', err => {
+      console.log(`connect_error due to ${err.message}`);
+    });
+
     console.log('Tracker client connected', socket.id);
 
     socket.on('disconnect', () =>
@@ -32,21 +36,17 @@ import loaders from './loaders';
     console.log(`Server listening on port ${port}`);
   });
 
-  process.on('SIGINT', async () => {
-    console.log('SIGINT: Shutting down...');
+  const shutdown = (signal: string) => async () => {
+    console.log(`${signal} received!`);
+    console.log('Shutting down...');
     io.close();
     httpServer.close;
     await app.get('mongoose').connection.close();
     console.log('Shutdown complete. Goodbye.');
     process.exit();
-  });
+  };
 
-  process.on('SIGTERM', async () => {
-    console.log('SIGTERM: Shutting down...');
-    io.close();
-    httpServer.close;
-    await app.get('mongoose').connection.close();
-    console.log('Shutdown complete. Goodbye.');
-    process.exit();
-  });
+  process.on('SIGINT', shutdown('SIGINT'));
+
+  process.on('SIGTERM', shutdown('SIGTERM'));
 })();
