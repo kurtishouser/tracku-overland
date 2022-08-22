@@ -21,8 +21,14 @@ router.route('/receiver').post(
   createLocations(locations.addAll)
 );
 
-router.route('/locations').get(getLocations(locations.fetchAll));
+router.route('/locations').get(
+  authenticateDevice,
+  getLocations(locations.fetchAll)
+);
 
-router.route('/trips').get(getTrips(trips.fetchAll));
+router.route('/trips').get(
+  authenticateDevice,
+  getTrips(trips.fetchAll)
+);
 
 export default router;
