@@ -1,5 +1,4 @@
-# for development only
-version: '3.1'
+# for production only
 
 services:
   www:
@@ -8,18 +7,19 @@ services:
       context: ./apps/frontend
     container_name: tracku_www
     restart: always
-    # environment:
-      # no effect since Dockerfile is from the prebuilt app
+    environment:
+      # no effect since Dockerfile is currently from the prebuilt app
       # REACT_APP_IO_SOCKET: ${REACT_APP_IO_SOCKET}
       # REACT_APP_IO_PATH: ${REACT_APP_IO_PATH}
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      VIRTUAL_PATH: ${VIRTUAL_PATH_WWW}
+      VIRTUAL_DEST: ${VIRTUAL_DEST_WWW}
     expose:
       - 80
       - 443
-    ports:
-      - 8080:80
     networks:
      - default
-    #  - tracku
+     - nginx-proxy
     depends_on:
       - api
 
@@ -33,15 +33,16 @@ services:
       - ./apps/backend/.env
     environment:
       TRACKU_DB_URI: ${TRACKU_DB_URI}
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      VIRTUAL_PATH: ${VIRTUAL_PATH_API}
+      #VIRTUAL_DEST: /
+      #VIRTUAL_PROTO: https
+      #VIRTUAL_PORT: 5000
     expose:
       - 5000
-    ports:
-     - 5000:5000
-    # links:
-    #   - db
     networks:
      - default
-    #  - tracku
+     - nginx-proxy
     depends_on:
       - db
 
@@ -55,16 +56,12 @@ services:
     restart: always
     env_file:
       - ./docker/mongodb_overland/.env
-    # networks:
-    #  - default
-    #  - tracku
-    ports:
-      - ${MONGO_HOST_PORT}:27017
 
 volumes:
   db_data:
 
 networks:
   default:
-  # tracku:
-  #   external: true
+  nginx-proxy:
+    external: true
+
